@@ -6,7 +6,7 @@ import SwiftUI
 /// Plays exported files from the library (one at a time).
 @MainActor
 final class PlayerService: NSObject, ObservableObject, AVAudioPlayerDelegate {
-    @Published private(set) var current: LibraryItem?
+    @Published private(set) var current: SavedAudio?
     @Published private(set) var isPlaying = false
     @Published var currentTime: Double = 0
     @Published private(set) var duration: Double = 0
@@ -18,7 +18,7 @@ final class PlayerService: NSObject, ObservableObject, AVAudioPlayerDelegate {
         try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
     }
 
-    func play(_ item: LibraryItem, url: URL) {
+    func play(_ item: SavedAudio, url: URL) {
         if current?.id == item.id, player != nil {
             toggle()
             return

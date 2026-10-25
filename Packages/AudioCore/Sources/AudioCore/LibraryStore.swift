@@ -1,6 +1,6 @@
 import Foundation
 
-public struct LibraryItem: Codable, Identifiable, Equatable, Hashable, Sendable {
+public struct SavedAudio: Codable, Identifiable, Equatable, Hashable, Sendable {
     public var id: UUID
     public var title: String
     public var fileName: String
@@ -41,7 +41,7 @@ public final class LibraryStore {
     public let directory: URL
     private let indexURL: URL
     private let fm = FileManager.default
-    public private(set) var items: [LibraryItem] = []
+    public private(set) var items: [SavedAudio] = []
 
     public init(directory: URL) {
         self.directory = directory
@@ -54,7 +54,7 @@ public final class LibraryStore {
         FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
     }
 
-    public func url(for item: LibraryItem) -> URL {
+    public func url(for item: SavedAudio) -> URL {
         directory.appendingPathComponent(item.fileName)
     }
 
@@ -62,7 +62,7 @@ public final class LibraryStore {
 
     private func load() {
         if let data = try? Data(contentsOf: indexURL),
-           let decoded = try? Self.decoder.decode([LibraryItem].self, from: data) {
+           let decoded = try? Self.decoder.decode([SavedAudio].self, from: data) {
             items = decoded
         }
         reconcile()
@@ -78,7 +78,7 @@ public final class LibraryStore {
         for file in files where !known.contains(file.lastPathComponent) {
             guard let format = AudioFormat(fileExtension: file.pathExtension) else { continue }
             let values = try? file.resourceValues(forKeys: [.fileSizeKey, .creationDateKey])
-            items.append(LibraryItem(title: file.deletingPathExtension().lastPathComponent,
+            items.append(SavedAudio(title: file.deletingPathExtension().lastPathComponent,
                                      fileName: file.lastPathComponent,
                                      format: format,
                                      duration: 0,
@@ -139,10 +139,10 @@ public final class LibraryStore {
 
     /// Register a file that was already written into `directory` (e.g. by `AudioEngine.export`).
     @discardableResult
-    public func add(result: ExportResult, title: String? = nil, sourceName: String? = nil) -> LibraryItem {
+    public func add(result: ExportResult, title: String? = nil, sourceName: String? = nil) -> SavedAudio {
         let fileName = result.url.lastPathComponent
         items.removeAll { $0.fileName == fileName }
-        let item = LibraryItem(title: title ?? result.url.deletingPathExtension().lastPathComponent,
+        let item = SavedAudio(title: title ?? result.url.deletingPathExtension().lastPathComponent,
                                fileName: fileName,
                                format: result.format,
                                duration: result.duration,
@@ -156,7 +156,7 @@ public final class LibraryStore {
 
     /// Renames the item and the underlying file.
     @discardableResult
-    public func rename(_ id: UUID, to newTitle: String) throws -> LibraryItem {
+    public func rename(_ id: UUID, to newTitle: String) throws -> SavedAudio {
         guard let index = items.firstIndex(where: { $0.id == id }) else { throw LibraryError.notFound }
         let clean = Self.sanitize(newTitle)
         guard !clean.isEmpty else { throw LibraryError.invalidName }

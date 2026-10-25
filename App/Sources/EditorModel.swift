@@ -7,7 +7,7 @@ final class EditorModel: ObservableObject {
     enum Phase: Equatable {
         case idle
         case exporting
-        case done(LibraryItem)
+        case done(SavedAudio)
         case failed(String)
     }
 

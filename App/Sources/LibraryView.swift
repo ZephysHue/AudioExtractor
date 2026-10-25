@@ -5,12 +5,12 @@ struct LibraryView: View {
     @EnvironmentObject private var app: AppModel
     @EnvironmentObject private var player: PlayerService
     @State private var query = ""
-    @State private var renaming: LibraryItem?
+    @State private var renaming: SavedAudio?
     @State private var newName = ""
     @State private var shareURL: URL?
     @State private var filter: AudioFormat?
 
-    private var filtered: [LibraryItem] {
+    private var filtered: [SavedAudio] {
         app.items.filter { item in
             (filter == nil || item.format == filter) &&
             (query.isEmpty || item.title.localizedCaseInsensitiveContains(query))
@@ -98,19 +98,19 @@ struct LibraryView: View {
         .searchable(text: $query, prompt: "搜索作品")
     }
 
-    private func startRename(_ item: LibraryItem) {
+    private func startRename(_ item: SavedAudio) {
         newName = item.title
         renaming = item
     }
 
-    private func delete(_ item: LibraryItem) {
+    private func delete(_ item: SavedAudio) {
         player.itemRemoved(item.id)
         app.delete(item)
     }
 }
 
 struct LibraryRow: View {
-    let item: LibraryItem
+    let item: SavedAudio
     var isPlaying: Bool
 
     var body: some View {

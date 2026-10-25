@@ -24,7 +24,7 @@ enum SettingsKey {
 @MainActor
 final class AppModel: ObservableObject {
     let store: LibraryStore
-    @Published private(set) var items: [LibraryItem] = []
+    @Published private(set) var items: [SavedAudio] = []
     @Published var selectedTab: AppTab = .home
     @Published var homePath: [ImportedSource] = []
     @Published var isImporting = false
@@ -43,13 +43,13 @@ final class AppModel: ObservableObject {
     }
 
     @discardableResult
-    func add(result: ExportResult, sourceName: String?) -> LibraryItem {
+    func add(result: ExportResult, sourceName: String?) -> SavedAudio {
         let item = store.add(result: result, sourceName: sourceName)
         items = store.items
         return item
     }
 
-    func rename(_ item: LibraryItem, to title: String) {
+    func rename(_ item: SavedAudio, to title: String) {
         do {
             try store.rename(item.id, to: title)
         } catch {
@@ -58,12 +58,12 @@ final class AppModel: ObservableObject {
         items = store.items
     }
 
-    func delete(_ item: LibraryItem) {
+    func delete(_ item: SavedAudio) {
         store.delete(item.id)
         items = store.items
     }
 
-    func url(for item: LibraryItem) -> URL { store.url(for: item) }
+    func url(for item: SavedAudio) -> URL { store.url(for: item) }
 
     /// Durations of files adopted from the Files app are unknown until we inspect them.
     func fillMissingDurations() async {
@@ -110,7 +110,7 @@ final class AppModel: ObservableObject {
     }
 
     /// Re-edit an item from the library (trim it again, convert to another format…).
-    func reedit(_ item: LibraryItem) {
+    func reedit(_ item: SavedAudio) {
         importFile(at: url(for: item))
     }
 }
