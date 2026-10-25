@@ -144,7 +144,7 @@ private struct ActionCard: View {
             Image(systemName: icon)
                 .font(.system(size: 26, weight: .semibold))
                 .frame(width: 56, height: 56)
-                .background(prominent ? AnyShapeStyle(.white.opacity(0.22)) : AnyShapeStyle(Theme.gradient),
+                .background(prominent ? AnyShapeStyle(Color.white.opacity(0.22)) : AnyShapeStyle(Theme.gradient),
                             in: RoundedRectangle(cornerRadius: 16, style: .continuous))
                 .foregroundStyle(.white)
             VStack(alignment: .leading, spacing: 4) {
@@ -154,7 +154,7 @@ private struct ActionCard: View {
             Spacer()
             Image(systemName: "chevron.right").font(.headline).opacity(0.6)
         }
-        .foregroundStyle(prominent ? AnyShapeStyle(.white) : AnyShapeStyle(.primary))
+        .foregroundStyle(prominent ? AnyShapeStyle(Color.white) : AnyShapeStyle(HierarchicalShapeStyle.primary))
         .padding(18)
         .background(prominent ? AnyShapeStyle(Theme.gradient) : AnyShapeStyle(Theme.cardBackground),
                     in: RoundedRectangle(cornerRadius: 22, style: .continuous))

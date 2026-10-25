@@ -33,7 +33,7 @@ run_tests() {
     xcodebuild -downloadPlatform iOS
     UDID=$(xcrun simctl list devices available | grep -E '^\s+iPhone' | head -1 | grep -oE '[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}')
   fi
-  log "运行测试（模拟器 $UDID）"
+  log "运行测试（模拟器 ${UDID}）"
   rm -rf build/Tests.xcresult
   set +e
   xcodebuild test \
