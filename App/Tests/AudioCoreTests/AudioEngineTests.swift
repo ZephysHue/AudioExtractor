@@ -155,9 +155,10 @@ final class AudioEngineTests: XCTestCase {
         let head = rms(s[0..<n])
         let mid = rms(s[Int(sr * 1.5)..<Int(sr * 1.5) + n])
         let tail = rms(s[(s.count - n)..<s.count])
-        XCTAssertLessThan(head, 0.05)
-        XCTAssertLessThan(tail, 0.05)
-        XCTAssertGreaterThan(mid, 0.2)
+        // Fixture sine has amplitude 1/8 (RMS ≈ 0.088).
+        XCTAssertGreaterThan(mid, 0.05)
+        XCTAssertLessThan(head, mid * 0.1)
+        XCTAssertLessThan(tail, mid * 0.1)
     }
 
     func testVolumeZeroIsSilent() async throws {

@@ -122,7 +122,6 @@ struct MiniPlayerBar: View {
             .shadow(color: .black.opacity(0.12), radius: 10, y: 4)
             .padding(.horizontal, 12)
             .padding(.bottom, 6)
-            .accessibilityIdentifier("miniPlayer")
         }
     }
 }
