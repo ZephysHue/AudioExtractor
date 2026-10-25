@@ -71,7 +71,7 @@ final class AudioExtractorUITests: XCTestCase {
         field.tap()
         field.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: 20))
         field.typeText("My Ringtone")
-        alert.buttons["保存"].tap()
+        alert.buttons["保存"].firstMatch.tap()
         XCTAssertTrue(rows.firstMatch.waitForExistence(timeout: 5))
         XCTAssertTrue(rows.firstMatch.label.contains("My Ringtone"))
 
