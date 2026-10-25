@@ -64,12 +64,14 @@ final class AudioExtractorUITests: XCTestCase {
         // Rename via swipe.
         rows.firstMatch.swipeLeft()
         app.buttons["重命名"].tap()
-        let field = app.textFields["renameField"]
+        let alert = app.alerts.firstMatch
+        XCTAssertTrue(alert.waitForExistence(timeout: 5))
+        let field = alert.textFields.firstMatch
         XCTAssertTrue(field.waitForExistence(timeout: 5))
         field.tap()
         field.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: 20))
         field.typeText("My Ringtone")
-        app.buttons["renameSave"].tap()
+        alert.buttons["保存"].tap()
         XCTAssertTrue(rows.firstMatch.waitForExistence(timeout: 5))
         XCTAssertTrue(rows.firstMatch.label.contains("My Ringtone"))
 
